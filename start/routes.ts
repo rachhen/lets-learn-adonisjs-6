@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const HealthChecksController = () => import('#controllers/health_checks_controller')
 const AdminDashboardController = () => import('#controllers/admin/dashboard_controller')
 const AdminMoviesController = () => import('#controllers/admin/movies_controller')
 const StorageController = () => import('#controllers/storage_controller')
@@ -26,6 +27,7 @@ const LogoutController = () => import('#controllers/auth/logout_controller')
 router.get('/', [HomeController, 'index']).as('home')
 
 router.get('/storage/*', [StorageController, 'show']).as('storage.show')
+router.get('/health', [HealthChecksController]).as('health')
 
 router.get('/movies', [MoviesController, 'index']).as('movies.index')
 router
