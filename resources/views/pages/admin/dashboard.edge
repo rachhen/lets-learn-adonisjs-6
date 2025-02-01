@@ -1,0 +1,12 @@
+@layout.admin({ title: "Dashboard" })
+  <h1>
+    Dashboard
+  </h1>
+
+  <div class="flex items-center justify-around gap-4 flex-wrap">
+    @!stat({ label: 'Total Movies', value: moviesCount.$extras.count })
+    @!stat({ label: 'Total Writer', value: writerCount.$extras.count })
+    @!stat({ label: 'Total Director', value: directorCount.$extras.count })
+    @!stat({ label: 'Movies Watched', value: watchedCount.$extras.count })
+  </div>
+@end

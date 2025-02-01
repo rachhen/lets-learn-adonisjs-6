@@ -1,0 +1,14 @@
+@layout({ title: 'Director' })
+  <h1>
+    {{ director.fullName }}
+  </h1>
+
+  <div class="flex flex-wrap">
+    @each(movie in movies)
+      <div class="w-full md:w-1/3 px-3">
+        @!movie.card({ movie, class: 'w-full' })
+      </div>
+    @end
+  </div>
+
+@end

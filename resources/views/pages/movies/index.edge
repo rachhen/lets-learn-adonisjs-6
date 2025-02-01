@@ -1,0 +1,55 @@
+@layout({ title: 'Movies' })
+  @slot('meta')
+    <meta name="description" content="Browse and search our awesome movies list" />
+  @end
+  
+  <form method="get" action="{{ route('movies.index') }}">
+    <div class="flex items-end gap-3 pt-4">
+      @!form.input({
+        label: "Search Title",
+        name: 'search',
+        type: 'search',
+        value: filters.search
+      })
+
+      @form.input({ type: 'select', label: 'Status', name: 'status' })
+        <option value="">
+          All
+        </option>
+        @each(status in movieStatuses)
+          <option value="{{ status.id }}" {{ html.attrs({ selected: status.id == filters.status }) }}>
+            {{ status.name }}
+          </option>
+        @end
+      @end
+      
+      @form.input({ type: 'select', label: 'Sort', name: 'sort' })
+        @each(item in movieSortOptions)
+          <option value="{{ item.id }}" {{ html.attrs({ selected: item.id == filters.sort }) }}>
+            {{ item.text }}
+          </option>
+        @end
+      @end
+      
+      @button({ type: 'submit' })
+        Search
+      @end
+    </div>
+  </form>
+
+  <h1>
+    All Movies
+  </h1>
+
+  <div class="grid grid-cols-3 gap-4 pb-4">
+    @each(movie in movies)
+      <div class="w-full">
+        @!movie.card({ movie, class: 'w-full', showWriterDirector: true, showStatus: true })
+      </div>
+    @end
+  </div>
+
+  @!pagination({ paginator: movies })
+
+</div>
+@end

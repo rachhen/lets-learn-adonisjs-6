@@ -1,0 +1,30 @@
+<nav class="flex justify-between items-center">
+  <div>
+    <a href="{{ route('home') }}">Home</a>
+    <a href="{{ route('movies.index') }}">Movies</a>
+    <a href="{{ route('directors.index') }}">Directors</a>
+    <a href="{{ route('writers.index') }}">Writers</a>
+  </div>
+
+  <div class="flex flex-row items-center text-sm">
+    @if(auth.user)
+      <a href="{{ route('watchlists.index') }}">Watchlist</a>
+
+      <a href="{{ route('profiles.edit') }}">Profile</a>
+
+      @if(auth.user.roleId === Roles.ADMIN)
+        <a href="{{ route('admin.dashboard') }}">Admin</a>
+      @end
+      
+      <form action="{{ route('auth.logout') }}" method="post">
+        {{ csrfField() }}
+        <button type="submit">
+          Logout ({{ auth.user.fullName }})
+        </button>
+      </form>
+    @else
+      <a href="{{ route('auth.login.show') }}">Login</a>
+      <a href="{{ route('auth.register.show') }}">Register</a>
+    @end
+  </div>
+</nav>

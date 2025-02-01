@@ -1,0 +1,72 @@
+@card({ ...$props.except(['movie']) })
+
+  @slot('picture')
+    <div class="relative">
+      <img src="{{ movie.posterUrl }}" class="w-full h-[150px] object-cover" />
+    </div>
+  @end
+  
+  
+  <h2 class="mb-2 font-bold leading-none tracking-tight">
+    {{ movie.title }}
+  </h2>
+
+  @if(showStatus)
+    <dl class="text-xs pb-2">
+      <div class="flex">
+        <dt class="w-16">
+          Status:
+        </dt>
+        <dd>
+          {{ movie.status.name }}
+        </dd>
+      </div>
+    </dl>
+  @end
+  
+  @if(showWriterDirector)
+    <dl class="text-xs pb-2">
+      <div class="flex">
+        <dt class="w-16">
+          Writer:
+        </dt>
+        <dd>
+          <a href="{{ route('writers.show', { id: movie.writer.id }) }}">
+            {{ movie.writer.fullName }}
+            </a>
+        </dd>
+      </div>
+      <div class="flex">
+        <dt class="w-16">
+          Director:
+        </dt>
+        <dd>
+          <a href="{{ route('directors.show', { id: movie.director.id }) }}">
+            {{ movie.director.fullName }}
+            </a>
+        </dd>
+      </div>
+    </dl>
+  @else
+    <p class="text-slate-400 text-xs pb-3">
+      {{ movie.summary }}
+    </p>
+  @end
+  
+  <div class="space-y-2">
+    @if($slots.action)
+      {{{ await $slots.action() }}}
+    @elseif(auth.user && movie.watchlist)
+      <form method="post" action="{{ route('watchlists.toggle', { movieId: movie.id }) }}">
+        {{ csrfField() }}
+        @button({ type: 'submit' })
+          {{ movie.watchlist.length ? 'In Your Watchlist' : 'Add To Watchlist' }}
+        @end
+      </form>
+    @end
+    
+    @button({ href: route('movies.show', { slug: movie.slug }) })
+      View Movie
+    @end
+  </div>
+@end

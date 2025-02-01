@@ -1,0 +1,41 @@
+@layout()
+  @slot('meta')
+    <meta name="description" content="Let's learn adonisjs 5" />
+  @end
+  
+  <h1>
+    Coming Soon
+  </h1>
+
+  <div class="grid grid-cols-3 gap-4">
+    @each(movie in comingSoon)
+      <div class="w-full">
+        @!movie.card({ movie, class: 'w-full', showWriterDirector: true  })
+      </div>
+    @end
+  </div>
+
+  <h1>
+    Recently Released
+  </h1>
+
+  <div class="grid grid-cols-3 gap-4 pb-4">
+    @each(movie in recentlyReleased)
+      <div class="w-full">
+        @!movie.card({ movie, class: 'w-full', showWriterDirector: true })
+      </div>
+    @end
+  </div>
+
+  <div class="fixed bottom-0 right-0 p-4">
+    <form action="{{ route('redis.flash', {}, { qs: { _method: 'DELETE' } }) }}" method="post">
+      {{ csrfField() }}
+      @button({ type: 'submit' })
+
+        @svg('ph:trash-fill', { class: 'mr-2' })
+        Flash Redis DB
+      @end
+    </form>
+  </div>
+</div>
+@end

@@ -1,0 +1,73 @@
+@layout.admin({ title: 'Movies' })
+
+  <div class="flex items-center justify-between gap-4">
+    <h1>
+      Movies
+    </h1>
+    @button({ href: route('admin.movies.create') })
+      Create Movie
+    @end
+  </div>
+
+  <table class="divide-y divide-slate-200 text-xs">
+    <thead>
+      <tr class="text-slate-500">
+        <td class="px-5 py-3 text-xs font-medium text-left uppercase">
+          Title
+        </td>
+        <td class="px-5 py-3 text-xs font-medium text-left uppercase">
+          Status
+        </td>
+        <td class="px-5 py-3 text-xs font-medium text-left uppercase">
+          Writer/Director
+        </td>
+        <td class="px-5 py-3 text-xs font-medium text-left uppercase">
+          Count
+        </td>
+        <td class="px-5 py-3 text-xs font-medium text-left uppercase">
+          Actions
+        </td>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-200">
+      @each(movie in movies)
+        <tr class="text-slate-800">
+          <td class="px-5 py-4 text-sm">
+            {{ movie.title }}
+          </td>
+          <td class="px-5 py-4 text-sm">
+            {{ movie.status.name }}
+          </td>
+          <td class="px-5 py-4 text-sm">
+            <div>
+              Writer: {{movie.writer.fullName}}
+            </div>
+            <div>
+              Director: {{ movie.director.fullName }}
+            </div>
+          </td>
+          <td class="px-5 py-4 text-sm">
+            <div>
+              Cast Members: {{movie.$extras.castMembers_count}}
+            </div>
+            <div>
+              Crew Members: {{ movie.$extras.crewMembers_count }}
+            </div>
+          </td>
+          <td class="px-5 py-4 text-sm">
+            <a href="{{ route('admin.movies.edit', { id: movie.id }) }}">Edit</a>
+            <form
+              method="post"
+              action="{{ route('admin.movies.destroy', { id: movie.id }, { qs: { _method: 'DELETE' }}) }}"
+            >
+              {{ csrfField() }}
+              <button type="submit" class="text-red-500">Delete</button>
+            </form>
+          </td>
+        </tr>
+      @end
+    </tbody>
+  </table>
+
+  @!pagination({ paginator: movies })
+@end

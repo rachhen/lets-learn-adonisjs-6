@@ -1,0 +1,66 @@
+@layout({ title: 'Edit Your Profile' })
+
+  <div class="flex flex-col mt-8 w-full justify-center items-center gap-6">
+    <h1>
+      Edit Your Profile
+    </h1>
+
+    @card({ class: 'max-w-md w-full' })
+
+      <form
+        id="editForm"
+        class="space-y-4"
+        enctype="multipart/form-data"
+        action="{{ route('profiles.update', {}, { qs: { '_method': 'PUT' }}) }}"
+        method="post"
+      >
+        {{ csrfField() }}
+        @error('form')
+          <p role="alert" class="text-red-500 bg-red-50 p-3 rounded text-xs">
+            {{ $message }}
+          </p>
+        @end
+        
+        @if(auth.user.avatarUrl)
+          <div class="relative w-1/3 mx-auth">
+            <img src="{{ auth.user.avatarUrl }}" class="w-full" />
+            <button
+              class="absolute top-0 right-0 p-3 rounded-full"
+              onclick="(document.forms.editForm.avatarUrl.value = '') || this.parentElement.remove()"
+            >
+              &times;
+            </button>
+          </div>
+        @end
+        
+        <input type="hidden" name="avatarUrl" value="{{ auth.user.avatarUrl || '' }}" />
+
+        @!form.input({
+          type: 'file',
+          label: 'Avatar',
+          name: 'avatar'
+        })
+
+        @!form.input({
+          label: 'Full Name',
+          name: 'fullName',
+          value: auth.user.fullName
+        })
+
+        @!form.input({
+          label: 'Biography',
+          name: 'description',
+          type: 'textarea',
+          value: profile.description
+        })
+
+        @button({ type: 'submit' })
+          Update Profile
+        @end
+        
+        
+      </form>
+    @end
+  </div>
+
+@end

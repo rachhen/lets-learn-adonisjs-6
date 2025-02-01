@@ -1,0 +1,33 @@
+@layout({ title: user.fullName })
+
+  <div class="flex items-center gap-4 pt-6 pb-12">
+    @if(user.avatarUrl)
+      <div class="w-16">
+        <img src="{{ user.avatarUrl }}" alt="{{ user.fullName }}" class="w-full" />
+      </div>
+    @end
+    
+    <div>
+      <h1 class="my-0">
+        {{ user.fullName }}
+      </h1>
+      @if(user.profile.description)
+        <p class="mb-0">
+          {{ user.profile.description }}
+        </p>
+      @end
+    </div>
+  </div>
+
+  <h4 class="font-bold mb-3">
+    Movies {{user.fullName}} Has Watched
+  </h4>
+  <div class="grid grid-cols-3 gap-3">
+    @each(movie in movies)
+      <div class="w-full">
+        @!movie.cardProfile({ movie, class: 'w-full' })
+      </div>
+    @end
+  </div>
+
+@end

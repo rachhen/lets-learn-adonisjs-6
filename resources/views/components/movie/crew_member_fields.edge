@@ -1,0 +1,13 @@
+<div class="flex gap-3">
+  @form.input({ type: 'select', label: 'Crew Member', name: `crew[${index}][id]` })
+    @each(cineast in cineasts)
+      <option value="{{ cineast.id }}" {{ html.attrs({ selected: cineast.id === member?.cineast_id }) }}>
+        {{ cineast.fullName }}
+      </option>
+    @end
+  @end
+  
+  @!form.input({ label: "Title", name: `crew[${index}][title]`, value: member?.title })
+
+  <button type="button" onclick="this.parentElement.remove()">&times;</button>
+</div>
